@@ -1,37 +1,24 @@
 # SKU Recon – Identificação de SKU via Imagem com IA
 
-## Commands
+## Introdução
 
 Na operação logística, produtos sem etiquetas causam gargalos no reprocessamento, na redistribuição e no lançamento fiscal. A identificação manual é lenta, sujeita a erros e ineficiente em escala. Este MVP tem como objetivo criar uma solução que permita capturar ou fazer upload de uma imagem de um produto e, via IA, identificar automaticamente o SKU correspondente.
 
 Além disso, a ferramenta poderá se integrar com o ERP/WMS da empresa para facilitar as etapas subsequentes da operação, como reprocessamento, redistribuição e lançamento fiscal. Pensando além, a mesma solução pode ser adaptada para identificar a quantidade de produtos em gôndolas de supermercado, auxiliando no controle de estoque e abastecimento.
 
-## 🧰 Stack Utilizada
+![Resultado](happy.png "Optional title")
 
-- Frontend: React + Tailwind CSS (portal web para upload/captura de imagem)
-- Backend/IA: Python com TensorFlow (reconhecimento de imagem e extração de features)
-- Biblioteca de Deep Learning: TensorFlow utilizando o modelo MobileNetV2
-- Tratamento de Dados: Pandas (tratamento de DataFrames no backend)
-- Orquestração: Windsurf (execução e comando via prompts de IA)
-- Banco de Dados: Supabase (armazenamento de SKUs e logs de uso)
-- Integrações: n8n (integração com Supabase e simulação de ERP/WMS)
+## 💰 Proposta comercial
 
-##  🔄 Fluxo da Solução (Workflow)
+O reconhecimento de SKUs é um problema recorrente e pode ser facilmente oferecido como um SaaS. Ofereceremos aos clientes várias opções de integração de seu banco de dados de produtos com nossos serviços:
 
-1. Usuário acessa o portal (React) e faz o upload ou captura de uma imagem.
-2. A imagem é enviada ao backend (Python), onde é processada por um script com TensorFlow.
-3. O script utiliza a arquitetura MobileNetV2 para extrair automaticamente as features (características visuais) da imagem.
-4. As features extraídas são comparadas com um banco de dados de imagens previamente treinadas.
-5. O SKU Recon identifica a imagem mais similar com base no nível de similaridade entre as features.
-6. O sistema retorna 3 informações ao frontend:
-7. Número do SKU correspondente à imagem enviada
-8. Nome do arquivo da imagem encontrada como mais similar
-9. Nível de similaridade (de 0 a 100; quanto mais próximo de 0, mais similar é a imagem)
-10. As informações são enviadas via webhook ao n8n.
-11. O n8n busca informações adicionais no Supabase e envia os dados para um endpoint simulado do ERP/WMS.
-12. O n8n registra um log da operação (SKU, status, data/hora) no Supabase.
+1) Para clientes que já têm uma conta de vendas eletrônicas, oferecemos uma API gratuita para carregar imagens de até 100 produtos (em diferentes ângulos e qualidades) e um treinamento gratuito usando aprendizagem profunda. O reconhecedor de SKU treinado é disponibilizado imediatamente por meio de uma chamada de API. Os clientes podem usar a chamada de API, uma interface da Web ou um aplicativo móvel para digitalizar seus produtos e receber o SKU. Os planos corporativos incluem preços baseados em volume de digitalizações e aprimoramento e retreinamento regulares do reconhecedor com um preço definido por volume, custo de treinamento e intervalos de atualização.
 
-## 🧠 Uso de IA
+2) Para outros clientes, oferecemos um serviço de nuvem que gerencia seu banco de dados de produtos. Os clientes podem fazer upload de uma descrição de seus produtos e imagens. Oferecemos diferentes níveis de serviço em função da qualidade dos dados. Os usuários podem fornecer descrições completas e imagens de qualidade variável (incluindo imagens panorâmicas ou digitalizações em 3D) ou apenas informações mais elementares, que serão processadas em nosso site.  Quanto aos clientes existentes, oferecemos um nível gratuito (“teaser”) com até 100 produtos e interfaces básicas, além de vários planos empresariais escalonáveis.
+
+3) Oferecemos ainda soluções empresariais com integração total com os sistemas do cliente. Nessas soluções, integramos o reconhecimento de SKUs ao ERP do cliente, para alimentar automaticamente as SKUs digitalizadas diretamente nos processos de negócios do cliente. Nesse caso, os clientes podem, por exemplo, manter automaticamente o estoque de produtos digitalizados, gerar notas de devolução e assim por diante.
+
+## 🧠 Uso de IA na solução
 
 ### Modelo Utilizado
 
