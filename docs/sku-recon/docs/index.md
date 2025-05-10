@@ -8,7 +8,7 @@ Além disso, a ferramenta poderá se integrar com o ERP/WMS da empresa para faci
 
 ![Resultado](happy.png "Optional title")
 
-## 💰 Proposta comercial
+## 💰 Proposta comercial e Escala de Negôcio
 
 O reconhecimento de SKUs é um problema recorrente e pode ser facilmente oferecido como um SaaS. Ofereceremos aos clientes várias opções de integração de seu banco de dados de produtos com nossos serviços:
 
@@ -18,7 +18,9 @@ O reconhecimento de SKUs é um problema recorrente e pode ser facilmente ofereci
 
 3) Oferecemos ainda soluções empresariais com integração total com os sistemas do cliente. Nessas soluções, integramos o reconhecimento de SKUs ao ERP do cliente, para alimentar automaticamente as SKUs digitalizadas diretamente nos processos de negócios do cliente. Nesse caso, os clientes podem, por exemplo, manter automaticamente o estoque de produtos digitalizados, gerar notas de devolução e assim por diante.
 
-## 🧠 Uso de IA na solução
+## 🧠 Uso das ferramentas e IA
+
+Usamos IA e ferramentas baseadas em IA em todos os estágios de desenvolvimento: para desenvolver um caso de negócios (LLM diversificado), para prospectar possíveis soluções técnicas (diversos LLMs), para desenvolver a solução técnica principal e criar uma página da Web (Prompting in Windsurf, GPT 4.1, Claude Sonnet 3.7), para criar logotipos (ChatGPT, Canva, Kling AI, Turbologo, Paint.net), para criar uma página de destino e (aplicativo Gamma). As principais soluções técnicas são implementadas em python e Tensorflow para treinamento, e em python e uvicorn para o backend.
 
 ### Modelo Utilizado
 
@@ -37,6 +39,8 @@ O reconhecimento de SKUs é um problema recorrente e pode ser facilmente ofereci
 - Número do SKU identificado
 - Nome do arquivo da imagem correspondente
 - Porcentagem de similaridade visual
+
+[Mais informações técnicas](tech)
 
 ## 🚧 Limitações e Próximos Passos
 
