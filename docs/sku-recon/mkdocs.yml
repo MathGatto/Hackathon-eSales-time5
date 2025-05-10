@@ -1,0 +1,7 @@
+site_name: SKU Recon
+nav:
+  - Principal: index.md
+  - Informações Técnicas: tech.md
+theme :
+  name: mkdocs
+  color_mode: light
