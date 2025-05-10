@@ -23,3 +23,4 @@
    - Nível de similaridade (de 0 a 100; quanto mais próximo de 0, mais similar é a imagem)
 7. O frontend visualiza as informações.
 
+![Fluxograma](Fluxograma.png "Fluxograma")

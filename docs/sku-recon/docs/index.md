@@ -6,7 +6,7 @@ Na operação logística, produtos sem etiquetas causam gargalos no reprocessame
 
 Além disso, a ferramenta poderá se integrar com o ERP/WMS da empresa para facilitar as etapas subsequentes da operação, como reprocessamento, redistribuição e lançamento fiscal. Pensando além, a mesma solução pode ser adaptada para identificar a quantidade de produtos em gôndolas de supermercado, auxiliando no controle de estoque e abastecimento.
 
-![Resultado](happy.png "Optional title")
+![Resultado](happy.png "The client after implementing our solution.")
 
 ## 💰 Proposta comercial e Escala de Negôcio
 
