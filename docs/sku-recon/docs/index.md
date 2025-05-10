@@ -20,7 +20,7 @@ O reconhecimento de SKUs é um problema recorrente e pode ser facilmente ofereci
 
 ## 🧠 Uso das ferramentas e IA
 
-Usamos IA e ferramentas baseadas em IA em todos os estágios de desenvolvimento: para desenvolver um caso de negócios (LLM diversificado), para prospectar possíveis soluções técnicas (diversos LLMs), para desenvolver a solução técnica principal e criar uma página da Web (Prompting in Windsurf, GPT 4.1, Claude Sonnet 3.7), para criar logotipos (ChatGPT, Canva, Kling AI, Turbologo, Paint.net), para criar uma página de destino e (aplicativo Gamma). As principais soluções técnicas são implementadas em python e Tensorflow para treinamento, e em python e uvicorn para o backend.
+Usamos IA e ferramentas baseadas em IA em todos os estágios de desenvolvimento: para desenvolver um caso de negócios (LLM diversificado), para prospectar possíveis soluções técnicas (diversos LLMs), para desenvolver a solução técnica principal e criar uma página da Web (Prompting in Windsurf, GPT 4.1, Claude Sonnet 3.7), para criar logotipos (ChatGPT, Canva, Kling AI, Turbologo, Paint.net), para criar um fluxograma (lucid.app), para criar uma página de destino e (aplicativo Gamma). As principais soluções técnicas são implementadas em python e Tensorflow para treinamento, e em python e uvicorn para o backend.
 
 ### Modelo Utilizado
 
