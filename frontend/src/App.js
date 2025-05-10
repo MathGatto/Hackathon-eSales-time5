@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { FiUpload, FiCamera, FiCheckCircle, FiAlertTriangle, FiRefreshCw } from "react-icons/fi";
+import { FiUpload, FiCamera, FiCheckCircle, FiAlertTriangle, FiRefreshCw, FiInfo, FiClock, FiList, FiBarChart2 } from "react-icons/fi";
 
 // Estilos para garantir que a interface seja moderna
 const styles = {
@@ -12,7 +12,7 @@ const styles = {
     fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
   }),
   innerContainer: {
-    maxWidth: "500px",
+    maxWidth: "600px",
     margin: "0 auto",
     padding: "2rem 1rem"
   },
@@ -100,12 +100,19 @@ const styles = {
     borderRadius: "0.5rem",
     overflow: "hidden",
     border: (isDark) => `1px solid ${isDark ? "#4b5563" : "#e5e7eb"}`,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",
+    maxWidth: "500px"
   },
   previewImage: {
     width: "100%",
     height: "250px",
     objectFit: "contain",
-    backgroundColor: (isDark) => isDark ? "#374151" : "#fff"
+    backgroundColor: (isDark) => isDark ? "#374151" : "#fff",
+    border: (isDark) => `1px solid ${isDark ? "#6b7280" : "#d1d5db"}`,
+    padding: "8px"
   },
   resetButton: (isDark) => ({
     position: "absolute",
@@ -161,7 +168,16 @@ const styles = {
   resultHeader: {
     display: "flex",
     alignItems: "center",
-    marginBottom: "1rem"
+    marginBottom: "1rem",
+    position: "relative"
+  },
+  processingTime: {
+    display: "flex",
+    alignItems: "center",
+    position: "absolute",
+    right: 0,
+    fontSize: "0.75rem",
+    color: "#9ca3af"
   },
   resultTitle: (isDark) => ({
     fontSize: "1.125rem",
@@ -173,6 +189,51 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "0.75rem"
+  },
+  referenceImageContainer: {
+    marginTop: "1rem",
+    marginBottom: "1rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.5rem"
+  },
+  referenceImage: {
+    width: "100%",
+    maxHeight: "200px",
+    objectFit: "contain",
+    borderRadius: "0.375rem",
+    border: "1px solid #e5e7eb"
+  },
+  referenceImageLabel: {
+    fontSize: "0.875rem",
+    color: "#6b7280",
+    marginBottom: "0.25rem"
+  },
+  comparisonContainer: {
+    display: "flex",
+    gap: "1rem",
+    marginTop: "1rem",
+    marginBottom: "1rem"
+  },
+  imageColumn: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  imageTitle: {
+    fontSize: "0.875rem",
+    fontWeight: "500",
+    marginBottom: "0.5rem",
+    textAlign: "center"
+  },
+  comparisonImage: {
+    width: "100%",
+    height: "150px",
+    objectFit: "contain",
+    borderRadius: "0.375rem",
+    border: "1px solid #e5e7eb"
   },
   resultRow: {
     display: "flex"
@@ -188,9 +249,157 @@ const styles = {
     wordBreak: "break-all"
   }),
   similarityValue: (value) => ({
-    color: value < 30 ? "#10b981" : value < 50 ? "#f59e0b" : "#ef4444",
+    color: value < 30 ? "#10b981" : value < 50 ? "#f59e0b" : value < 70 ? "#f97316" : "#ef4444",
     fontWeight: "500"
   }),
+  matchQualityContainer: {
+    display: "flex",
+    alignItems: "center"
+  },
+  actionButtons: {
+    display: "flex",
+    marginTop: "1.25rem"
+  },
+  detailedView: {
+    marginTop: "1.5rem",
+    borderTop: "1px solid",
+    borderTopColor: (isDark) => isDark ? "#374151" : "#e5e7eb",
+    paddingTop: "1.25rem"
+  },
+  sectionTitle: (isDark) => ({
+    fontSize: "1rem",
+    fontWeight: "600",
+    marginBottom: "0.75rem",
+    color: isDark ? "#fff" : "#111827",
+    display: "flex",
+    alignItems: "center"
+  }),
+  descriptionSection: {
+    marginBottom: "1.5rem"
+  },
+  descriptionText: (isDark) => ({
+    fontSize: "0.875rem",
+    lineHeight: "1.5",
+    color: isDark ? "#d1d5db" : "#4b5563",
+    whiteSpace: "pre-line"
+  }),
+  similarProductsSection: {
+    marginBottom: "1rem"
+  },
+  similarProductsList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem"
+  },
+  similarProductItem: (isDark) => ({
+    padding: "0.75rem",
+    borderRadius: "0.375rem",
+    backgroundColor: isDark ? "#1f2937" : "#f9fafb",
+    border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+    marginBottom: "0.5rem"
+  }),
+  similarProductHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "0.5rem",
+    alignItems: "center"
+  },
+  similarProductSku: {
+    fontWeight: "500",
+    fontSize: "0.875rem"
+  },
+  similarProductImage: {
+    width: "100%",
+    height: "120px",
+    objectFit: "contain",
+    borderRadius: "0.25rem",
+    marginTop: "0.5rem",
+    backgroundColor: "#f3f4f6"
+  },
+  similarProductDistance: (value) => ({
+    color: value < 10 ? "#10b981" : value < 30 ? "#f59e0b" : "#ef4444",
+    fontSize: "0.75rem",
+    fontWeight: "600",
+    display: "flex",
+    alignItems: "center"
+  }),
+  similarProductName: {
+    fontSize: "0.875rem",
+    color: "#6b7280"
+  },
+  historyContainer: (isDark) => ({
+    marginTop: "2rem",
+    padding: "1.25rem",
+    borderRadius: "0.5rem",
+    backgroundColor: isDark ? "#1f2937" : "#fff",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`
+  }),
+  historyHeader: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "1rem"
+  },
+  historyTitle: (isDark) => ({
+    fontSize: "1.125rem",
+    fontWeight: "600",
+    color: isDark ? "#fff" : "#111827"
+  }),
+  historyList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem"
+  },
+  historyItem: (isDark) => ({
+    display: "flex",
+    padding: "0.75rem",
+    borderRadius: "0.375rem",
+    backgroundColor: isDark ? "#111827" : "#f9fafb",
+    border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`
+  }),
+  historyItemPreview: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "0.25rem",
+    overflow: "hidden",
+    marginRight: "0.75rem",
+    flexShrink: 0
+  },
+  historyItemImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
+  },
+  historyItemInfo: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column"
+  },
+  historyItemHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "0.25rem"
+  },
+  historyItemSku: {
+    fontWeight: "500",
+    fontSize: "0.875rem"
+  },
+  historyItemTime: {
+    fontSize: "0.75rem",
+    color: "#9ca3af"
+  },
+  historyItemProduct: {
+    fontSize: "0.875rem",
+    color: "#6b7280",
+    marginBottom: "0.25rem",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  },
+  historyItemQuality: {
+    display: "flex",
+    alignItems: "center"
+  },
   '@keyframes spin': {
     '0%': { transform: 'rotate(0deg)' },
     '100%': { transform: 'rotate(360deg)' }
@@ -206,6 +415,29 @@ function App() {
   const [preview, setPreview] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [produto, setProduto] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [produtosSimilares, setProdutosSimilares] = useState([]);
+  const [processamentoMs, setProcessamentoMs] = useState(null);
+  const [historicoBuscas, setHistoricoBuscas] = useState([]);
+  const [showDetailedView, setShowDetailedView] = useState(false);
+
+  // Carrega o modo escuro das preferências do usuário
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode !== null) {
+      setDarkMode(savedDarkMode === 'true');
+    } else {
+      // Verifica se o usuário prefere o tema escuro no sistema
+      const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(prefersDarkMode);
+    }
+  }, []);
+
+  // Salva o modo escuro nas preferências do usuário
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
 
   // Função para lidar com o drag & drop
   const onDrop = useCallback((acceptedFiles) => {
@@ -218,6 +450,11 @@ function App() {
       setImgName("");
       setDistancia(null);
       setErro("");
+      setProduto("");
+      setDescricao("");
+      setProdutosSimilares([]);
+      setProcessamentoMs(null);
+      setShowDetailedView(false);
     }
   }, []);
 
@@ -237,6 +474,10 @@ function App() {
     setSku("");
     setImgName("");
     setDistancia(null);
+    setProduto("");
+    setDescricao("");
+    setProdutosSimilares([]);
+    setProcessamentoMs(null);
     setIsProcessing(true);
     
     try {
@@ -252,9 +493,30 @@ function App() {
       if (data.erro) {
         setErro(data.erro);
       } else {
+        // Atualiza os estados com os dados recebidos
         setSku(data.sku);
         setImgName(data.img_name);
         setDistancia(data.distancia);
+        setProduto(data.produto || "");
+        setDescricao(data.descricao || "");
+        setProdutosSimilares(data.produtos_similares || []);
+        setProcessamentoMs(data.processamento_ms || null);
+        
+        // Adiciona ao histórico de buscas
+        const novaBusca = {
+          id: Date.now(),
+          sku: data.sku,
+          produto: data.produto || "",
+          distancia: data.distancia,
+          timestamp: new Date().toLocaleTimeString(),
+          preview: preview
+        };
+        
+        setHistoricoBuscas(prev => {
+          // Mantém apenas as 5 buscas mais recentes
+          const novoHistorico = [novaBusca, ...prev].slice(0, 5);
+          return novoHistorico;
+        });
       }
     } catch (e) {
       setErro("Erro ao conectar com o backend.");
@@ -270,6 +532,23 @@ function App() {
     setImgName("");
     setDistancia(null);
     setErro("");
+    setProduto("");
+    setDescricao("");
+    setProdutosSimilares([]);
+    setProcessamentoMs(null);
+    setShowDetailedView(false);
+  };
+  
+  // Função para alternar entre visão resumida e detalhada
+  const toggleDetailView = () => {
+    setShowDetailedView(!showDetailedView);
+  };
+  
+  // Função para classificar a qualidade da correspondência
+  const getMatchQuality = (distance) => {
+    if (distance < 10) return { text: "Excelente", color: "#10b981", emoji: "✅" };
+    if (distance < 30) return { text: "Razoável", color: "#f59e0b", emoji: "⚠️" };
+    return { text: "Não Aderente", color: "#ef4444", emoji: "❌" };
   };
 
   const toggleDarkMode = () => {
@@ -387,6 +666,13 @@ function App() {
             <div style={styles.resultHeader}>
               <FiCheckCircle style={{ color: '#10b981' }} />
               <h3 style={styles.resultTitle(darkMode)}>Resultado</h3>
+              
+              {processamentoMs && (
+                <div style={styles.processingTime}>
+                  <FiClock size={14} style={{ marginRight: '4px' }} />
+                  <span>{processamentoMs}ms</span>
+                </div>
+              )}
             </div>
             
             <div style={styles.resultContent}>
@@ -395,30 +681,173 @@ function App() {
                 <span style={styles.resultValue(darkMode)}>{sku}</span>
               </div>
               
-              <div style={styles.resultRow}>
-                <span style={styles.resultLabel(darkMode)}>Imagem ref:</span>
-                <span style={styles.resultValue(darkMode)}>{imgName}</span>
-              </div>
+              {produto && (
+                <div style={styles.resultRow}>
+                  <span style={styles.resultLabel(darkMode)}>Produto:</span>
+                  <span style={styles.resultValue(darkMode)}>{produto}</span>
+                </div>
+              )}
               
               <div style={styles.resultRow}>
-                <span style={styles.resultLabel(darkMode)}>Similaridade:</span>
+                <span style={styles.resultLabel(darkMode)}>Correspondência:</span>
                 <span style={styles.resultValue(darkMode)}>
                   {distancia !== null ? (
-                    <span style={styles.similarityValue(distancia)}>
-                      {distancia.toFixed(2)}
-                    </span>
+                    <div style={styles.matchQualityContainer}>
+                      <span style={styles.similarityValue(distancia)}>
+                        {distancia.toFixed(2)}
+                      </span>
+                      <span style={{
+                        marginLeft: '8px',
+                        color: getMatchQuality(distancia).color,
+                        fontWeight: '600',
+                        fontSize: '1rem',
+                        padding: '4px 12px',
+                        borderRadius: '9999px',
+                        backgroundColor: `${getMatchQuality(distancia).color}20`,
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}>
+                        <span style={{ marginRight: '6px', fontSize: '1.25rem' }}>{getMatchQuality(distancia).emoji}</span>
+                        {getMatchQuality(distancia).text}
+                      </span>
+                    </div>
                   ) : "-"}
                 </span>
               </div>
+              
+              {/* Imagem de referência do SKU */}
+              {imgName && (
+                <div style={styles.comparisonContainer}>
+                  <div style={styles.imageColumn}>
+                    <div style={styles.imageTitle}>Sua imagem</div>
+                    <img 
+                      src={preview} 
+                      alt="Imagem enviada" 
+                      style={styles.comparisonImage} 
+                    />
+                  </div>
+                  <div style={styles.imageColumn}>
+                    <div style={styles.imageTitle}>Imagem de referência</div>
+                    <img 
+                      src={`http://localhost:8000/reference-image/${imgName}`} 
+                      alt="Imagem de referência" 
+                      style={styles.comparisonImage} 
+                    />
+                  </div>
+                </div>
+              )}
+              
+              <div style={styles.actionButtons}>
+                <button 
+                  onClick={toggleDetailView}
+                  style={{...styles.button(darkMode, false, false), marginRight: '8px', flex: 1}}
+                >
+                  <FiInfo style={{ marginRight: '0.5rem' }} />
+                  {showDetailedView ? "Ver resumo" : "Ver detalhes"}
+                </button>
+                
+                <button 
+                  onClick={resetForm}
+                  style={{...styles.button(darkMode, false, false), flex: 1}}
+                >
+                  <FiRefreshCw style={{ marginRight: '0.5rem' }} />
+                  Nova busca
+                </button>
+              </div>
             </div>
             
-            <button 
-              onClick={resetForm}
-              style={{...styles.button(darkMode, false, false), marginTop: '1.25rem', width: '100%'}}
-            >
-              <FiRefreshCw style={{ marginRight: '0.5rem' }} />
-              Nova busca
-            </button>
+            {/* Visão detalhada */}
+            {showDetailedView && (
+              <div style={styles.detailedView}>
+                {descricao && (
+                  <div style={styles.descriptionSection}>
+                    <h4 style={styles.sectionTitle(darkMode)}>Descrição</h4>
+                    <p style={styles.descriptionText(darkMode)}>{descricao}</p>
+                  </div>
+                )}
+                
+                {produtosSimilares && produtosSimilares.length > 0 && (
+                  <div style={styles.similarProductsSection}>
+                    <h4 style={styles.sectionTitle(darkMode)}>
+                      <FiBarChart2 style={{ marginRight: '0.5rem' }} />
+                      Produtos similares
+                    </h4>
+                    <div style={styles.similarProductsList}>
+                      {produtosSimilares.map((produto, index) => (
+                        <div key={index} style={styles.similarProductItem(darkMode)}>
+                          <div style={styles.similarProductHeader}>
+                            <span style={styles.similarProductSku}>{produto.sku}</span>
+                            <span style={{
+                              ...styles.similarProductDistance(produto.distancia),
+                              backgroundColor: `${getMatchQuality(produto.distancia).color}15`,
+                              padding: '4px 8px',
+                              borderRadius: '4px'
+                            }}>
+                              <span style={{ marginRight: '4px', fontSize: '1rem' }}>
+                                {produto.distancia < 10 ? "✅" : produto.distancia < 30 ? "⚠️" : "❌"}
+                              </span>
+                              <span style={{ marginRight: '4px' }}>{produto.distancia.toFixed(2)}</span>
+                              <span style={{ fontSize: '0.7rem' }}>({getMatchQuality(produto.distancia).text})</span>
+                            </span>
+                          </div>
+                          <p style={styles.similarProductName}>{produto.produto}</p>
+                          {produto.img_name && (
+                            <img 
+                              src={`http://localhost:8000/reference-image/${produto.img_name}`} 
+                              alt={`Imagem de ${produto.sku}`} 
+                              style={styles.similarProductImage} 
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Histórico de buscas */}
+        {historicoBuscas.length > 0 && !preview && (
+          <div style={styles.historyContainer(darkMode)}>
+            <div style={styles.historyHeader}>
+              <FiList style={{ marginRight: '0.5rem' }} />
+              <h3 style={styles.historyTitle(darkMode)}>Histórico de buscas</h3>
+            </div>
+            
+            <div style={styles.historyList}>
+              {historicoBuscas.map((busca) => (
+                <div key={busca.id} style={styles.historyItem(darkMode)}>
+                  <div style={styles.historyItemPreview}>
+                    <img 
+                      src={busca.preview} 
+                      alt="Imagem" 
+                      style={styles.historyItemImage} 
+                    />
+                  </div>
+                  <div style={styles.historyItemInfo}>
+                    <div style={styles.historyItemHeader}>
+                      <span style={styles.historyItemSku}>{busca.sku}</span>
+                      <span style={styles.historyItemTime}>{busca.timestamp}</span>
+                    </div>
+                    <p style={styles.historyItemProduct}>{busca.produto}</p>
+                    <div style={styles.historyItemQuality}>
+                      <span style={styles.similarityValue(busca.distancia)}>
+                        {busca.distancia.toFixed(2)}
+                      </span>
+                      <span style={{
+                        marginLeft: '8px',
+                        color: getMatchQuality(busca.distancia).color,
+                        fontSize: '0.75rem'
+                      }}>
+                        {getMatchQuality(busca.distancia).text}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -8,7 +8,7 @@ from tensorflow.keras.models import Model
 
 # Caminhos
 CSV_PATH = os.path.join("data", "produtos.csv")
-IMG_DIR = os.path.join("data", "Images")
+IMG_DIR = os.path.join("data", "Images", "produtos")
 OUTPUT_PATH = os.path.join("data", "features.pkl")
 
 # Carrega o CSV
@@ -22,11 +22,22 @@ model = Model(inputs=base_model.input, outputs=base_model.output)
 
 features_list = []
 
+# Contador para acompanhar o progresso
+total_rows = len(df)
+processed_count = 0
+
 for idx, row in df.iterrows():
     sku = row.get("SKU")
     img_name = row.get("Imagem")
+    
+    # Atualiza o contador e mostra progresso
+    processed_count += 1
+    if processed_count % 100 == 0:
+        print(f"Processando {processed_count}/{total_rows} ({processed_count/total_rows*100:.1f}%)")
+    
     if pd.isna(img_name):
         continue
+        
     img_path = os.path.join(IMG_DIR, img_name)
     if not os.path.isfile(img_path):
         print(f"Imagem não encontrada: {img_path}")
