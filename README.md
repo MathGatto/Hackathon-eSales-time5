@@ -2,7 +2,11 @@
 
 ## Sobre o Projeto
 
-O Web SKU Identifier é uma solução desenvolvida durante o Hackathon e-Sales para resolver um desafio crítico enfrentado por equipes de vendas e auditoria em campo: a identificação rápida e precisa de produtos em prateleiras de supermercados e outros pontos de venda.
+O Web SKU Identifier, mais conhecido como **SKU RecoN**, é uma solução desenvolvida durante o Hackathon eSales.
+
+A solução nasceu do seguinte desafio: Criar uma I.A que identifique qual o SKU pertencente a um objeto a partir de uma imagem. Ou seja, quando tirarmos uma foto de um tênis, a IA deve reconhecer qual o SKU daquele tênis.
+
+A escalabilidade é enorme, desenvolvemos um MVP, mas podemos ampliar para diversos modelos de negócio, desde varejo e supermercados até gestão de estoques e logística.
 
 ### O Desafio do Hackathon
 
@@ -17,7 +21,7 @@ O desafio proposto no Hackathon e-Sales foi desenvolver uma solução tecnológi
 
 ### Nossa Solução
 
-O Web SKU Identifier é uma aplicação web que permite aos usuários capturar ou fazer upload de imagens de produtos e, utilizando técnicas avançadas de visão computacional e deep learning, identifica automaticamente o SKU correspondente na base de dados. A solução fornece não apenas o código do SKU, mas também informações detalhadas sobre o produto, além de sugerir produtos similares para comparação em casos de correspondência incerta.
+O Web SKU Identifier, mais conhecido como **SKU RecoN**, é uma aplicação web que permite aos usuários capturar ou fazer upload de imagens de produtos e, utilizando técnicas avançadas de visão computacional e deep learning, identifica automaticamente o SKU correspondente na base de dados. A solução fornece não apenas o código do SKU, mas também informações detalhadas sobre o produto, além de sugerir produtos similares para comparação em casos de correspondência incerta.
 
 ## Tecnologias Utilizadas
 
